@@ -1,0 +1,39 @@
+version: '3'
+
+services:
+
+  lyte:
+    build: .
+    volumes:
+      - .:/home/appuser/lyte
+      # - static_volume:/home/appuser/thistle/thistle/static  # <-- bind the static volume
+      # - media_volume:/home/appuser/thistle/media  # <-- bind the media volume
+    networks:
+      - nginx_network
+    restart: always
+
+  nginx:
+    image: nginx:1.15-alpine
+    ports:
+      - 8007:8007
+    volumes:
+      - ./config/nginx/conf.d:/etc/nginx/conf.d
+    labels:
+      - "traefik.enabled=true"
+      - "traefik.backend=lyte"
+      - "traefik.frontend.rule=Host:lyte.ashford.sh"
+      - "traefik.docker.network=traefik_default"
+      - "traefik.port=8007"
+    depends_on:  # <-- wait for lyte to be "ready" before starting this service
+      - lyte
+    restart: always
+    networks:
+      - nginx_network
+      # - traefik_default
+
+networks:
+  nginx_network:
+    driver: bridge
+  # traefik_default:
+  #   external:
+  #     name: traefik_default

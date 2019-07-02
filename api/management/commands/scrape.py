@@ -15,11 +15,11 @@ class Command(BaseCommand):
     
 
     def handle(self, *args, **options):
-        for i in range(1, 21):
+        for i in range(1, 15):
             paginated_query = "{}&page={}".format(self.base_query, i)
             r = requests.get(paginated_query)
             events = r.json()["events"]
-
+            self.stdout.write(i)
             for event in events:
                 Event.objects.update_or_create(
                     id=event["id"],

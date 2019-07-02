@@ -8,4 +8,4 @@ class Event(models.Model):
     start_time = models.DateTimeField()
     end_time = models.DateTimeField()
     price = models.DecimalField(max_digits=6, decimal_places=2, default=1.0)
-    organization_id = models.IntegerField(default=1)
+    organization_id = models.BigIntegerField(default=1)
