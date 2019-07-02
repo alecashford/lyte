@@ -29,11 +29,11 @@ services:
     restart: always
     networks:
       - nginx_network
-      # - traefik_default
+      - traefik_default
 
 networks:
   nginx_network:
     driver: bridge
-  # traefik_default:
-  #   external:
-  #     name: traefik_default
+  traefik_default:
+    external:
+      name: traefik_default
